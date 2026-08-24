@@ -678,6 +678,12 @@ esp32-mini-weather-station/
 ├── firmware/esp32/
 │ ├── sketch.ino # Program utama dengan non-blocking loop
 │ └── EyeAnimation.h # Kelas animasi mata mochi
+├── firmware/esp32/
+│ ├── test/ # Modul pengujian
+│ │ ├── oled_test.ino # Test display
+│ │ ├── dht_test.ino # Test DHT
+│ │ ├── weather_parse_test.ino # Test XML parse
+│ │ └── eyes_test.ino # Test animasi
 ├── assets/ # Gambar & diagram
 │ ├── mini_weather_station_banner.png
 │ ├── weather_station_demo.gif
@@ -686,11 +692,6 @@ esp32-mini-weather-station/
 │ ├── slide-3.png # Cuaca di Tangerang suhu luar H dan L
 │ ├── slide-4.png # Suhu ruangan
 │ └── schematic.png
-├── test/ # Modul pengujian
-│ ├── oled_test.ino # Test display
-│ ├── dht_test.ino # Test DHT
-│ ├── weather_parse_test.ino # Test XML parse
-│ └── eyes_test.ino # Test animasi
 ├── docs/ # Dokumentasi
 │ ├── wiring_guide.md
 │ └── arduino_loop_guide.md # millis() reference
