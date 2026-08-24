@@ -675,8 +675,9 @@ if (httpResponseCode != 200) { suhu = "28"; }
 ## 📁 Struktur Folder
 ```
 esp32-mini-weather-station/
-├── main.ino # Program utama dengan non-blocking loop
-├── EyeAnimation.h # Kelas animasi mata mochi
+├── firmware/esp32/
+│ ├── sketch.ino # Program utama dengan non-blocking loop
+│ └── EyeAnimation.h # Kelas animasi mata mochi
 ├── assets/ # Gambar & diagram
 │ ├── mini_weather_station_banner.png
 │ ├── weather_station_demo.gif
@@ -694,8 +695,7 @@ esp32-mini-weather-station/
 │ ├── wiring_guide.md
 │ └── arduino_loop_guide.md # millis() reference
 ├── LICENSE
-├── README.md
-└── .gitignore
+└──  README.md
 ```
 
 ---
