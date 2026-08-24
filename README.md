@@ -112,14 +112,15 @@
 <p align="center">
   <img src="/assets/Schematic-Weather-Station.png?height=400&width=700" alt="ESP32 Weather Station Wiring Diagram" width="700"/><br/>
   <em>Wiring Diagram ESP32-C3 Mini Weather Station</em><br/>
-  ⚙️ <strong>Notes:</strong><br/>
-  🔹 OLED terhubung via I2C: SDA (GPIO 8) & SCL (GPIO 9).<br/>
-  🔹 DHT22 terhubung ke GPIO 2 (data pin).<br/>
-  🔹 TTP223 touch sensor terhubung ke GPIO 4 (OUT).<br/>
-  🔹 Common ground (GND) untuk semua komponen.<br/>
-  🔹 Power ESP32-C3 via USB atau 3.3V pin untuk testing.<br/>
-  🔹 Tambahkan resistor pull-up 4.7kΩ pada SDA/SCL dan 10kΩ pada data DHT22.
 </p>
+
+>   ⚙️ Notes:
+>   🔹 OLED terhubung via I2C: SDA (GPIO 8) & SCL (GPIO 9).<br/>
+>   🔹 DHT22 terhubung ke GPIO 2 (data pin).<br/>
+>   🔹 TTP223 touch sensor terhubung ke GPIO 4 (OUT).<br/>
+>   🔹 Common ground (GND) untuk semua komponen.<br/>
+>   🔹 Power ESP32-C3 via USB atau 3.3V pin untuk testing.<br/>
+>   🔹 Tambahkan resistor pull-up 4.7kΩ pada SDA/SCL dan 10kΩ pada data DHT22.
 
 ---
 
