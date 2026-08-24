@@ -1,4 +1,4 @@
-# Troubleshooting - ESP32 Mini Weather Station
+# 📙 Troubleshooting - ESP32 Mini Weather Station
 
 ## 📋 Daftar Masalah
 
@@ -75,7 +75,7 @@ if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
 DHT22 pins:
 ├─ VCC → 3.3V
 ├─ GND → GND
-└─ Data → GPIO 2
+└─ Data → GPIO 5 (SuperMini)
 ```
 
 #### 2. Pull-up Resistor
@@ -96,10 +96,6 @@ if (!isnan(t)) {
   Serial.println("DHT ERROR: NaN");
 }
 ```
-
-#### 5. Cek Library
-- Pastikan menggunakan library DHT sensor by Adafruit
-- Versi terbaru: 1.4.4
 
 ---
 
@@ -125,11 +121,7 @@ wm.resetSettings(); // Hapus konfigurasi lama
 - Gunakan 2.4GHz only (bukan 5GHz)
 - Channel: 1-11
 
-#### 4. Cek Antenna
-- Pastikan antenna terhubung
-- Jarak ke router tidak terlalu jauh
-
-#### 5. Manual Connect
+#### 4. Manual Connect
 ```cpp
 WiFi.begin("SSID", "password");
 int attempts = 0;
@@ -174,18 +166,6 @@ if (error) {
 }
 ```
 
-#### 4. Cek Memory
-- DynamicJsonDocument size: 4096 cukup
-- Jika kurang, naikkan ke 8192
-
-#### 5. Fallback
-```cpp
-if (httpResponseCode != 200) {
-  suhu = "28";
-  cuacaSekarang = "Berawan";
-}
-```
-
 ---
 
 ## Loop Hang atau Delay
@@ -212,12 +192,7 @@ void loop() {
 }
 ```
 
-#### 3. Cek HTTP Timeout
-```cpp
-http.setTimeout(5000); // 5 detik timeout
-```
-
-#### 4. Monitor Stack
+#### 3. Monitor Memory
 ```cpp
 Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 ```
@@ -239,15 +214,7 @@ void begin() {
 }
 ```
 
-#### 2. Cek Timing
-```cpp
-if (now >= nextBlinkTime) {
-  blinking = true;
-  blinkStart = now;
-}
-```
-
-#### 3. Debugging
+#### 2. Debugging
 ```cpp
 Serial.print("Blinking: ");
 Serial.println(blinking);
@@ -278,17 +245,6 @@ if (now - lastSlideChange >= slideInterval) {
 }
 ```
 
-#### 3. Cek Switch Case
-```cpp
-switch (currentSlide) {
-  case 0: drawEyeScreen(); break;
-  case 1: drawTimeScreen(); break;
-  case 2: drawWeatherScreen(); break;
-  case 3: drawRoomTempScreen(); break;
-  default: currentSlide = 0; // Reset jika error
-}
-```
-
 ---
 
 ## Deep Sleep Tidak Bekerja
@@ -299,9 +255,9 @@ switch (currentSlide) {
 
 ### Solusi
 
-#### 1. Cek Pin
+#### 1. Cek Pin (SuperMini)
 ```cpp
-#define TOUCH_PIN 1  // GPIO 4
+#define TOUCH_PIN 7  // GPIO 7 untuk TTP223
 ```
 
 #### 2. Cek Wiring TTP223
@@ -309,7 +265,7 @@ switch (currentSlide) {
 TTP223 pins:
 ├─ VCC → 3.3V
 ├─ GND → GND
-└─ OUT → GPIO 4
+└─ OUT → GPIO 7
 ```
 
 #### 3. Cek Wake-up Level
@@ -321,20 +277,6 @@ gpio_wakeup_enable((gpio_num_t)TOUCH_PIN, GPIO_INTR_LOW_LEVEL);
 #### 4. Cek Inactivity Timeout
 ```cpp
 const unsigned long INACTIVITY_TIMEOUT = 600000UL; // 10 menit
-```
-
-#### 5. Cek Double Tap Logic
-```cpp
-// Di setup() untuk wake-up
-if (wakeup_reason == ESP_SLEEP_WAKEUP_GPIO) {
-  // Tunggu double tap dalam 2 detik
-  if (doubleTap) {
-    // Bangun
-  } else {
-    // Kembali sleep
-    goToSleep();
-  }
-}
 ```
 
 ---
@@ -360,22 +302,19 @@ Untuk masuk flash mode
 
 #### 3. Cek Short Circuit
 - Pastikan tidak ada short antara 3.3V dan GND
-- Cek dengan multimeter
-
-#### 4. Force Upload
-```bash
-# Hold BOOT button saat upload
-# Atau gunakan:
-esptool.py --port /dev/ttyUSB0 erase_flash
-```
 
 ---
 
-## 📚 Referensi Tambahan
+## 📚 Referensi
 
 - [ESP32-C3 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf)
-- [ESP32 Troubleshooting Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html)
 - [Arduino ESP32 Issues](https://github.com/espressif/arduino-esp32/issues)
+
+---
+
+## 🔗 Navigasi
+
+- [⬅ Kembali ke Home](../README.md)
 
 ---
 
