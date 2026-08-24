@@ -61,24 +61,6 @@
 | 3 | Cuaca Tangerang (suhu, UV, forecast) |
 | 4 | Suhu ruangan + termometer analog |
 
-<p align="center">
-  <img src="/assets/weather_station_demo.gif?height=400&width=700" alt="ESP32 Mini Weather Station Demo" width="700"/><br/>
-  <em>Demo: slide animasi, data real-time & fallback offline</em>
-</p>
-
----
-
-### <p align="center">🔄 Slide (Rotasi Tiap 10 Detik)</p>
-
-<p align="center">
-  <strong>Slide 1:</strong> Animasi mata mochi + status WiFi<br/>
-  <strong>Slide 2:</strong> Waktu & tanggal (rounded border)<br/>
-  <strong>Slide 3:</strong> Cuaca Tangerang (suhu, kondisi, forecast)<br/>
-  <strong>Slide 4:</strong> Suhu ruangan dari DHT22 + ikon termometer
-</p>
-
----
-
 ### <p align="center">🖼️ Preview Slide</p>
 
 <p align="center">
