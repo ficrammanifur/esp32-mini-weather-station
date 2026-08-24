@@ -76,12 +76,14 @@
 <p align="center">
   <img src="/assets/Schematic-Weather-Station.png?height=400&width=700" alt="ESP32 Weather Station Wiring Diagram" width="700"/><br/>
   <em> Wiring Diagram ESP32-C3 Mini Weather Station</em><br/>
-  ⚙️ <strong>Notes:</strong><br/>
-  🔹 OLED terhubung via I2C: SDA (GPIO 8) & SCL (GPIO 9).  
-  🔹 DHT22 terhubung ke GPIO 2 (data pin).  
-  🔹 Common ground (GND) untuk semua komponen.  
-  🔹 Power ESP32-C3 via USB atau 3.3V pin untuk testing.  
 </p>
+
+>  ⚙️ <strong>Notes:</strong><br/>
+>  🔹 OLED terhubung via I2C: SDA (GPIO 8) & SCL (GPIO 9).  
+>  🔹 DHT22 terhubung ke GPIO 2 (data pin).  
+>  🔹 Common ground (GND) untuk semua komponen.  
+>  🔹 Power ESP32-C3 via USB atau 3.3V pin untuk testing.  
+
 
 ---
 
