@@ -1,9 +1,3 @@
-Tentu, saya akan merapikan dan mengintegrasikan file-file yang Anda berikan ke dalam satu `README.md` yang terstruktur dengan baik. Saya akan menggabungkan informasi dari `README.md` yang ada, `sketch.ino`, `EyeAnimation.h`, dan `freertos_guide.md` menjadi satu dokumen yang komprehensif.
-
----
-
-# ESP32 Mini Weather Station (ESP32-C3)
-
 <h1 align="center">
 🌤️ ESP32 Mini Weather Station<br>
     <sub>OLED Display with Animated Mochi Eyes & DHT22 Sensor</sub>
