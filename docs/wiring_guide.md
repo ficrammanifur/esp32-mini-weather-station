@@ -1,120 +1,111 @@
-# Panduan Pengkabelan untuk Stasiun Cuaca Mini ESP32
+# Panduan Pengkabelan ESP32 Mini Weather Station
 
 ## 📋 Gambaran Umum
-Panduan ini memberikan instruksi pengkabelan langkah demi langkah untuk merakit Stasiun Cuaca Mini ESP32. Pengaturan sederhana, menggunakan I2C untuk tampilan OLED dan satu GPIO untuk sensor DHT22. Pastikan semua koneksi aman untuk menghindari kabel longgar atau hubungan pendek.
+
+Panduan ini memberikan instruksi pengkabelan langkah demi langkah untuk merakit Stasiun Cuaca Mini ESP32.
 
 ### Alat yang Diperlukan
-- Solder (opsional untuk prototipe breadboard)
-- Kabel jumper (male-to-female untuk breadboard)
-- Breadboard atau perfboard
-- Multimeter (untuk tes kontinuitas)
-- ESP32 DevKit V1 atau serupa
+- ESP32-C3 DevKit
+- SSD1306 OLED 128x64 (I2C)
+- DHT22 Sensor
+- TTP223 Touch Sensor
+- Kabel jumper (male-to-female)
+- Breadboard
+- Resistor: 4.7kΩ (2x), 10kΩ (1x)
+- Multimeter (opsional)
 
 ### Catatan Keselamatan
-- **Sumber Daya:** Gunakan 3.3V untuk sensor dan tampilan. Jangan melebihi 5V pada pin ESP32.
-- **Perlindungan ESD:** Ground diri Anda untuk mencegah kerusakan statis pada komponen.
-- **Testing:** Nyalakan tanpa sensor dulu untuk verifikasi boot ESP32.
+- Gunakan 3.3V untuk semua komponen
+- Jangan melebihi 5V pada pin GPIO
+- Ground diri Anda untuk mencegah ESD
 
 ---
 
-## 🛠️ Referensi Pinout
-### Penugasan Pin ESP32 DevKit V1
-| Pin ESP32 | Fungsi | Terhubung Ke | Catatan |
-|-----------|--------|--------------|---------|
-| GPIO 3 | Data DHT22 | Pin Data DHT22 | Protokol single-wire |
-| GPIO 8 | I2C SDA | OLED SDA | Resistor pull-up direkomendasikan (4.7kΩ) |
-| GPIO 9 | I2C SCL | OLED SCL | Resistor pull-up direkomendasikan (4.7kΩ) |
-| 3.3V | Daya | VCC OLED, VCC DHT22 | Rail daya bersama |
-| GND | Ground | GND OLED, GND DHT22 | Ground umum |
+## 🔌 Pinout
 
-### Pinout Komponen
-#### SSD1306 OLED (I2C)
-- VCC → Rail 3.3V ESP32
-- GND → Rail GND ESP32
-- SDA → GPIO 8 ESP32
-- SCL → GPIO 9 ESP32
+### ESP32-C3 Pin Assignment
 
-#### Sensor DHT22
-- VCC → Rail 3.3V ESP32
-- GND → Rail GND ESP32
-- Data → GPIO 3 ESP32
-- (NC) → Tidak Terhubung
+| Pin | Fungsi | Terhubung Ke |
+|-----|--------|--------------|
+| GPIO 8 | I2C SDA | OLED SDA |
+| GPIO 9 | I2C SCL | OLED SCL |
+| GPIO 2 | Data | DHT22 Data |
+| GPIO 4 | Touch | TTP223 OUT |
+| 3.3V | Power | VCC semua komponen |
+| GND | Ground | GND semua komponen |
 
 ---
 
-## 🔌 Instruksi Pengkabelan Langkah demi Langkah
+## 🔗 Wiring Diagram
 
-### 1. Siapkan Breadboard
-- Tempatkan ESP32 di satu sisi breadboard.
-- Gunakan rail daya untuk distribusi 3.3V dan GND.
-
-### 2. Kabelkan Tampilan OLED
-1. Hubungkan VCC OLED ke rail 3.3V ESP32.
-2. Hubungkan GND OLED ke rail GND ESP32.
-3. Hubungkan SDA OLED ke GPIO 8 ESP32 (gunakan kabel jumper).
-4. Hubungkan SCL OLED ke GPIO 9 ESP32 (gunakan kabel jumper).
-5. **Opsional:** Tambahkan resistor pull-up 4.7kΩ antara SDA/SCL dan 3.3V untuk I2C stabil.
-
-**Visual (ASCII Art):**
 ```
-ESP32          OLED
------         -----
-3.3V  ──────── VCC
-GND   ──────── GND
-GPIO8 ──────── SDA
-GPIO9 ──────── SCL
+ESP32-C3 DevKit
+├─ GPIO 8 ──── OLED SDA
+├─ GPIO 9 ──── OLED SCL
+├─ GPIO 2 ──── DHT22 Data
+├─ GPIO 4 ──── TTP223 OUT
+├─ 3.3V ────── OLED VCC
+│              DHT22 VCC
+│              TTP223 VCC
+└─ GND ─────── OLED GND
+               DHT22 GND
+               TTP223 GND
 ```
 
-### 3. Kabelkan Sensor DHT22
-1. Hubungkan VCC DHT22 ke rail 3.3V ESP32.
-2. Hubungkan GND DHT22 ke rail GND ESP32.
-3. Hubungkan Data DHT22 ke GPIO 3 ESP32 (gunakan kabel jumper).
-4. **Opsional:** Tambahkan resistor pull-up 10kΩ antara Data dan VCC untuk keandalan.
-
-**Visual (ASCII Art):**
-```
-ESP32          DHT22
------         -----
-3.3V  ──────── VCC
-GND   ──────── GND
-GPIO3 ──────── Data
-```
-
-### 4. Koneksi Daya
-- Hubungkan ESP32 via USB untuk testing awal (memberikan 5V ke VIN).
-- Untuk standalone: Gunakan sumber eksternal 5V ke VIN dan GND.
-- Verifikasi dengan multimeter: Rail 3.3V stabil ~3.3V.
-
-### 5. Diagram Perakitan Lengkap
-(Lihat `/assets/Schematic-Weather-Station.png` untuk skematik visual.)
-
-**Saran Layout Breadboard:**
-- Rail kiri: ESP32
-- Tengah: OLED (atas) + DHT22 (bawah)
-- Rail kanan: Distribusi daya
+### Pull-up Resistor
+- **I2C (SDA/SCL):** 4.7kΩ ke 3.3V
+- **DHT22 Data:** 10kΩ ke 3.3V
 
 ---
 
-## 🔍 Langkah Verifikasi
-1. **Tes Kontinuitas:** Gunakan multimeter untuk cek koneksi (beep pada hubungan pendek).
-2. **Tes Daya:** Ukur voltase: Rail 3.3V = 3.3V, tanpa hubungan pendek ke GND.
-3. **Upload Kode Tes:** Gunakan `test/oled_test.ino` – harus tampil "Hello OLED".
-4. **Tes DHT:** Gunakan `test/dht_test.ino` – output serial tampilkan suhu.
-5. **Tes Lengkap:** Upload firmware utama; verifikasi slide dan pembacaan sensor.
+## 🖼️ Skematik
 
-### Masalah Umum & Perbaikan
-| Masalah | Penyebab | Perbaikan |
-|---------|----------|-----------|
-| OLED Kosong | Kabel I2C longgar | Pasang ulang jumper, cek pull-up |
-| DHT NaN | Pelanggaran timing | Tambah delay >2 detik antar baca |
-| Error I2C | Konflik alamat | Scan I2C (alamat 0x3C untuk OLED) |
-| Penurunan Daya | Kabel panjang | Pendekkan jumper, tambah kapasitor |
+![Wiring Diagram](/assets/Schematic-Weather-Station.png)
 
 ---
 
-## 📝 Referensi
-- [Panduan Adafruit SSD1306](https://learn.adafruit.com/monochrome-oled-breakouts/wiring-128x64-oleds)
-- [DHT22 dengan ESP32](https://randomnerdtutorials.com/esp32-dht11-dht22-temperature-humidity-sensor-arduino-ide/)
-- [Pin I2C ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/i2c.html)
+## ✅ Verifikasi
+
+### 1. Tes Daya
+- Ukur voltase 3.3V pada rail
+- Pastikan tidak ada short circuit
+
+### 2. Tes OLED
+Upload `test/oled_test.ino`:
+```cpp
+#include <Wire.h>
+#include <Adafruit_SSD1306.h>
+// ... kode test ...
+```
+Expected: Layar menampilkan "Hello OLED"
+
+### 3. Tes DHT22
+Upload `test/dht_test.ino`:
+Expected: Serial monitor menampilkan suhu
+
+### 4. Tes Touch
+Upload `test/touch_test.ino`:
+Expected: Serial monitor berubah saat disentuh
+
+---
+
+## 🐞 Troubleshooting
+
+| Masalah | Solusi |
+|---------|--------|
+| OLED kosong | Cek SDA/SCL, pull-up 4.7kΩ |
+| DHT NaN | Cek pull-up 10kΩ, delay >2s |
+| Touch tidak responsif | Cek VCC/GND, active LOW |
+| ESP32 tidak boot | Cek power supply, USB cable |
+
+---
+
+## 📚 Referensi
+
+- [Adafruit SSD1306 Guide](https://learn.adafruit.com/monochrome-oled-breakouts)
+- [DHT22 with ESP32](https://randomnerdtutorials.com/esp32-dht11-dht22-temperature-humidity-sensor-arduino-ide/)
+- [ESP32-C3 Pinout](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html)
+
+---
 
 *Terakhir Diperbarui: 06 November 2025*
