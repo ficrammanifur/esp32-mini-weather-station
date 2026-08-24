@@ -1,4 +1,4 @@
-# Panduan FreeRTOS untuk Stasiun Cuaca Mini ESP32
+# 📗 Panduan FreeRTOS untuk ESP32 Mini Weather Station
 
 ## 📋 Gambaran Umum
 
@@ -15,7 +15,7 @@ Framework Arduino di ESP32 berjalan di atas FreeRTOS. Panduan ini menjelaskan ca
 | **Multi-Tasking** | Jalankan task secara paralel |
 | **Prioritas** | Task penting (display) dapat diprioritaskan |
 | **Komunikasi** | Queue & semaphore untuk sharing data |
-| **Stability** | Preemptive multitasking yang mature |
+| **Stabilitas** | Preemptive multitasking yang mature |
 
 ---
 
@@ -38,9 +38,11 @@ xTaskCreate(myTask, "MyTask", 2048, NULL, 1, NULL);
 ```
 
 ### Prioritas
-- **0:** Terendah (idle)
-- **1-10:** Normal
-- **11-24:** Tinggi (hati-hati)
+| Prioritas | Deskripsi |
+|-----------|-----------|
+| **0** | Terendah (idle) |
+| **1-10** | Normal |
+| **11-24** | Tinggi (hati-hati) |
 
 ### Stack Size
 - Minimum: 2048 words (~8KB)
@@ -136,10 +138,10 @@ vTaskList(); // Print ke Serial
 
 | Masalah | Gejala | Solusi |
 |---------|--------|--------|
-| Stack Overflow | Crash/reset | Naikkan stack size |
-| Priority Inversion | Task lambat | Gunakan mutex dengan priority inheritance |
-| Deadlock | Hang | Hindari nested locking |
-| Queue Full | Data hilang | Naikkan queue size |
+| **Stack Overflow** | Crash/reset | Naikkan stack size |
+| **Priority Inversion** | Task lambat | Gunakan mutex dengan priority inheritance |
+| **Deadlock** | Hang | Hindari nested locking |
+| **Queue Full** | Data hilang | Naikkan queue size |
 
 ---
 
@@ -148,6 +150,12 @@ vTaskList(); // Print ke Serial
 - [ESP-IDF FreeRTOS Docs](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/freertos.html)
 - [FreeRTOS.org](https://www.freertos.org/)
 - [Random Nerd Tutorials](https://randomnerdtutorials.com/esp32-freertos-tasks-arduino-ide/)
+
+---
+
+## 🔗 Navigasi
+
+- [⬅ Kembali ke Home](../README.md)
 
 ---
 
