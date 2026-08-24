@@ -1,4 +1,4 @@
-# Referensi API - ESP32 Mini Weather Station
+# 📕 Referensi API - ESP32 Mini Weather Station
 
 ## 📋 Daftar Fungsi
 
@@ -12,6 +12,8 @@ void setup() {
   // Fetch data pertama
 }
 ```
+
+---
 
 ### Display Functions
 
@@ -72,7 +74,7 @@ void fetchData() {
 }
 ```
 
-**URL Format:**
+**URL Format (Tangerang):**
 ```
 https://api.open-meteo.com/v1/forecast?
   latitude=-6.1783&
@@ -202,6 +204,12 @@ void draw(Adafruit_SSD1306 &display) {
 - [Open-Meteo API Docs](https://open-meteo.com/en/docs)
 - [Adafruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
 - [ESP32 Sleep Modes](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/sleep_modes.html)
+
+---
+
+## 🔗 Navigasi
+
+- [⬅ Kembali ke Home](../README.md)
 
 ---
 
