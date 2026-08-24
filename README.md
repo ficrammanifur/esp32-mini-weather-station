@@ -176,5 +176,5 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 [⬆ Back on Top](#esp32-mini-weather-station-esp32-c3)
 
-</div>
 *Terakhir Diperbarui: 06 November 2025*
+</div>
