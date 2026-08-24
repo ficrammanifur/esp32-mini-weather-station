@@ -4,134 +4,169 @@
 
 Panduan ini memberikan instruksi pengkabelan langkah demi langkah untuk merakit Stasiun Cuaca Mini ESP32 menggunakan **ESP32-C3 SuperMini**.
 
-### Alat yang Diperlukan
-- **ESP32-C3 SuperMini** (atau varian ESP32-C3 lainnya)
-- **SSD1306 OLED** 128x64 (I2C)
-- **DHT22** Sensor
-- **TTP223** Touch Sensor
-- Kabel jumper (male-to-female)
-- Breadboard
-- Resistor: 4.7kΩ (2x), 10kΩ (1x)
-- Multimeter (opsional)
+---
 
-### Catatan Keselamatan
+## 🛠️ Alat yang Diperlukan
+
+| Komponen | Jumlah | Keterangan |
+|----------|--------|------------|
+| ESP32-C3 SuperMini | 1 | Board utama |
+| SSD1306 OLED 128x64 | 1 | Tampilan I2C |
+| DHT22 Sensor | 1 | Suhu ruangan |
+| TTP223 Touch Sensor | 1 | Wake-up dari sleep |
+| Kabel jumper M-F | 8-10 | Koneksi antar komponen |
+| Breadboard | 1 | Tempat merangkai |
+| Resistor 4.7kΩ | 2 | Pull-up I2C |
+| Resistor 10kΩ | 1 | Pull-up DHT22 |
+| Multimeter | 1 | Opsional, untuk cek koneksi |
+
+### ⚠️ Catatan Keselamatan
 - Gunakan **3.3V** untuk semua komponen
 - Jangan melebihi **5V** pada pin GPIO
 - Ground diri Anda untuk mencegah ESD
 
 ---
 
-## 🔌 ESP32-C3 SuperMini Pinout
+## 🔌 Pinout ESP32-C3 SuperMini
 
-Berikut adalah pinout untuk **ESP32-C3 SuperMini** yang Anda gunakan:
+<p align="center">
+  <img src="/assets/ESP32-C3 pinout.jpeg" alt="ESP32-C3 Pinout" width="400"/>
+</p>
 
+### Layout Board
 ```
-┌─────────────────────────────────────────────────────┐
-│                                                     │
-│  ┌─────────────────────────────────────────────┐    │
-│  │              ESP32-C3 SuperMini             │    │
-│  │                                             │    │
-│  │  ┌────────────┐      ┌──────────────────┐   │    │
-│  │  │   5V       │      │   GPIO05         │   │    │
-│  │  │   GND      │      │   GPIO06         │   │    │
-│  │  │   3.3V     │      │   GPIO07         │   │    │
-│  │  │   GPIO08   │      │   BOOT1          │   │    │
-│  │  │   GPIO09   │      │   GPIO10         │   │    │
-│  │  │   GPIO20   │      │   GPIO21         │   │    │
-│  │  │   GPIO22   │      │                  │   │    │
-│  │  └────────────┘      └──────────────────┘   │    │
-│  └─────────────────────────────────────────────┘    │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────┐
+│                                                       │
+│  ┌─────────────────────────────────────────────────┐  │
+│  │                ESP32-C3 SuperMini               │  │
+│  │                                                 │  │
+│  │  ┌──────────────┐          ┌──────────────────┐ │  │
+│  │  │    5V        │          │   GPIO05         │ │  │
+│  │  │    GND       │          │   GPIO06         │ │  │
+│  │  │    3.3V      │          │   GPIO07         │ │  │
+│  │  │   GPIO08     │          │   BOOT1          │ │  │
+│  │  │   GPIO09     │          │   GPIO10         │ │  │
+│  │  │   GPIO20     │          │   GPIO21         │ │  │
+│  │  │   GPIO22     │          │                  │ │  │
+│  │  └──────────────┘          └──────────────────┘ │  │
+│  └─────────────────────────────────────────────────┘  │
+│                                                       │
+└───────────────────────────────────────────────────────┘
 ```
 
-### Tabel Pin Penting untuk Proyek Ini
+### PCB Size
+<p align="center">
+  <img src="/assets/PCB size.jpeg" alt="PCB Size" width="400"/>
+</p>
 
-| Pin Board | Fungsi | Koneksi | Catatan |
-|-----------|--------|---------|---------|
-| **3.3V** | Power | VCC semua komponen | Jangan pakai 5V! |
-| **GND** | Ground | GND semua komponen | — |
-| **GPIO08** | I2C SDA | OLED SDA | Pull-up 4.7kΩ ke 3.3V |
-| **GPIO09** | I2C SCL | OLED SCL | Pull-up 4.7kΩ ke 3.3V |
-| **GPIO05** | Data | DHT22 Data | Pull-up 10kΩ ke 3.3V |
-| **GPIO07** | Touch | TTP223 OUT | Active LOW |
-| **GPIO20** | UART RX | Serial monitor | Optional untuk debugging |
-| **GPIO21** | UART TX | Serial monitor | Optional untuk debugging |
+### Schematic
+<p align="center">
+  <img src="/assets/ESP32-C3-SuperMini Schematic.jpeg" alt="ESP32-C3 SuperMini Schematic" width="500"/>
+</p>
 
-> ⚠️ **Boot Mode:** GPIO08 dan GPIO09 adalah strapping pins. Pastikan dalam keadaan HIGH saat boot (default sudah pull-up internal).
+---
+
+## 📊 Tabel Koneksi Pin
+
+| Pin Board | Fungsi | Koneksi | Resistor | Catatan |
+|-----------|--------|---------|----------|---------|
+| **3.3V** | Power | VCC semua komponen | — | JANGAN pakai 5V! |
+| **GND** | Ground | GND semua komponen | — | Ground bersama |
+| **GPIO08** | I2C SDA | OLED SDA | 4.7kΩ ke 3.3V | Strapping pin |
+| **GPIO09** | I2C SCL | OLED SCL | 4.7kΩ ke 3.3V | Strapping pin |
+| **GPIO05** | Data | DHT22 Data | 10kΩ ke 3.3V | Pull-up penting |
+| **GPIO07** | Touch | TTP223 OUT | — | Active LOW |
+| **GPIO20** | UART RX | Serial monitor | — | Opsional debugging |
+| **GPIO21** | UART TX | Serial monitor | — | Opsional debugging |
+
+> ⚠️ **Boot Mode:** GPIO08 dan GPIO09 adalah **strapping pins**. Pastikan dalam keadaan HIGH saat boot (default sudah pull-up internal).
 
 ---
 
 ## 🔗 Wiring Diagram
 
+<p align="center">
+  <img src="/assets/Schematic-Weather-Station.png" alt="Schematic Diagram" width="600"/>
+</p>
+
 ### Diagram Ringkas
-
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        ESP32-C3 SuperMini                       │
-│                                                                 │
-│   ┌──────────────┐          ┌──────────────┐                    │
-│   │   3.3V       │──────────│  Power Rail  │                    │
-│   │   GND        │──────────│  GND Rail    │                    │
-│   └──────────────┘          └──────────────┘                    │
-│                                                                 │
-│   ┌──────────────┐          ┌──────────────┐                    │
-│   │   GPIO08     │──────────│  OLED SDA    │                    │
-│   │   GPIO09     │──────────│  OLED SCL    │                    │
-│   │   GPIO05     │──────────│  DHT22 Data  │                    │
-│   │   GPIO07     │──────────│  TTP223 OUT  │                    │
-│   └──────────────┘          └──────────────┘                    │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Koneksi per Komponen
-
-#### 1. OLED SSD1306 (I2C)
-```
-ESP32-C3                    OLED
-─────────                   ────
-  GPIO08  ────────────────── SDA
-  GPIO09  ────────────────── SCL
-  3.3V    ────────────────── VCC
-  GND     ────────────────── GND
-
- ╔════╗    ╔════╗
- ║4.7k║    ║4.7k║  ← Pull-up Resistor (SDA & SCL ke 3.3V)
- ╚════╝    ╚════╝
-   │         │
-   └────┬────┘
-        │
-       3.3V
-```
-
-#### 2. DHT22 Sensor
-```
-ESP32-C3                    DHT22
-─────────                   ─────
-  GPIO05  ────────────────── Data
-  3.3V    ────────────────── VCC
-  GND     ────────────────── GND
-
-  ╔════╗
-  ║10k ║  ← Pull-up Resistor (Data → 3.3V)
-  ╚════╝
-     │
-     └──── 3.3V
-```
-
-#### 3. TTP223 Touch Sensor
-```
-ESP32-C3                    TTP223
-─────────                   ──────
-  GPIO07  ────────────────── OUT
-  3.3V    ────────────────── VCC
-  GND     ────────────────── GND
+┌────────────────────────────────────────────────────────────────┐
+│                        ESP32-C3 SuperMini                      │
+│                                                                │
+│   ┌──────────────┐          ┌──────────────────────────────┐   │
+│   │   3.3V       │──────────│  Power Rail (VCC)            │   │
+│   │   GND        │──────────│  GND Rail                    │   │
+│   └──────────────┘          └──────────────────────────────┘   │
+│                                                                │
+│   ┌──────────────┐          ┌──────────────────────────────┐   │
+│   │   GPIO08     │──────────│  OLED SDA                    │   │
+│   │   GPIO09     │──────────│  OLED SCL                    │   │
+│   │   GPIO05     │──────────│  DHT22 Data                  │   │
+│   │   GPIO07     │──────────│  TTP223 OUT                  │   │
+│   └──────────────┘          └──────────────────────────────┘   │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📝 Konfigurasi di `sketch.ino`
+## 🔧 Koneksi per Komponen
+
+### 1. OLED SSD1306 (I2C)
+
+```
+┌─────────────┐          ┌─────────────┐
+│  ESP32-C3   │          │    OLED     │
+├─────────────┤          ├─────────────┤
+│   GPIO08    │──────────│    SDA      │
+│   GPIO09    │──────────│    SCL      │
+│   3.3V      │──────────│    VCC      │
+│   GND       │──────────│    GND      │
+└─────────────┘          └─────────────┘
+
+     ╔════╗    ╔════╗
+     ║4.7k║    ║4.7k║  ← Pull-up ke 3.3V
+     ╚════╝    ╚════╝
+      │         │
+      └────┬────┘
+           │
+          3.3V
+```
+
+### 2. DHT22 Sensor
+
+```
+┌─────────────┐          ┌─────────────┐
+│  ESP32-C3   │          │   DHT22     │
+├─────────────┤          ├─────────────┤
+│   GPIO05    │──────────│   Data      │
+│   3.3V      │──────────│   VCC       │
+│   GND       │──────────│   GND       │
+└─────────────┘          └─────────────┘
+
+     ╔════╗
+     ║10k ║  ← Pull-up ke 3.3V
+     ╚════╝
+      │
+      └──── 3.3V
+```
+
+### 3. TTP223 Touch Sensor
+
+```
+┌─────────────┐          ┌─────────────┐
+│  ESP32-C3   │          │   TTP223    │
+├─────────────┤          ├─────────────┤
+│   GPIO07    │──────────│   OUT       │
+│   3.3V      │──────────│   VCC       │
+│   GND       │──────────│   GND       │
+└─────────────┘          └─────────────┘
+```
+
+---
+
+## 💻 Konfigurasi di `sketch.ino`
 
 Update pin configuration di firmware:
 
@@ -153,7 +188,8 @@ Update pin configuration di firmware:
 ## ✅ Verifikasi
 
 ### 1. Tes OLED
-Upload dan jalankan:
+**Upload `test/oled_test.ino`**
+
 ```cpp
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
@@ -181,24 +217,26 @@ void setup() {
 
 void loop() {}
 ```
-✅ Expected: Layar menampilkan "Hello OLED!"
+
+✅ **Expected:** Layar menampilkan "Hello OLED!"
 
 ### 2. Tes DHT22
-✅ Expected: Serial monitor menampilkan suhu & kelembaban
+✅ **Expected:** Serial monitor menampilkan suhu & kelembaban
 
 ### 3. Tes Touch
-✅ Expected: Serial monitor berubah saat TTP223 disentuh
+✅ **Expected:** Serial monitor berubah saat TTP223 disentuh
 
 ---
 
 ## 🐞 Troubleshooting Cepat
 
-| Masalah | Solusi |
-|---------|--------|
-| OLED kosong | Cek SDA/SCL, pull-up 4.7kΩ, alamat I2C 0x3C |
-| DHT NaN | Cek pull-up 10kΩ, delay >2s antar baca |
-| Touch tidak responsif | Cek VCC/GND, TTP223 active LOW |
-| ESP32 tidak boot | Cek GPIO08 & GPIO09 pull-up, power supply |
+| Masalah | Kemungkinan Penyebab | Solusi |
+|---------|---------------------|--------|
+| **OLED kosong** | Kabel longgar / pull-up hilang | Cek SDA/SCL, tambah 4.7kΩ pull-up |
+| **DHT NaN** | Pull-up hilang / timing salah | Tambah 10kΩ pull-up, delay >2s |
+| **Touch tidak responsif** | VCC/GND terbalik | Cek wiring, TTP223 active LOW |
+| **ESP32 tidak boot** | Strapping pin salah | Cek GPIO08 & GPIO09 pull-up |
+| **WiFi tidak connect** | Antena / channel | Gunakan 2.4GHz only, cek antenna |
 
 ---
 
@@ -207,7 +245,13 @@ void loop() {}
 - [ESP32-C3 Datasheet](https://documentation.espressif.com/esp32-c3_datasheet_en.html)
 - [ESP32-C3 SuperMini Schematic](https://www.wemos.cc/en/latest/c3/c3_mini.html)
 - [Adafruit SSD1306 Guide](https://learn.adafruit.com/monochrome-oled-breakouts)
+- [DHT22 with ESP32](https://randomnerdtutorials.com/esp32-dht11-dht22-temperature-humidity-sensor-arduino-ide/)
 
 ---
+
+
+## 🔗 Navigasi
+
+- [⬅ Kembali ke Home](../README.md)
 
 *Terakhir Diperbarui: 06 November 2025*
