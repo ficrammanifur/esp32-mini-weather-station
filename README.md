@@ -61,16 +61,57 @@
 | 3 | Cuaca Tangerang (suhu, UV, forecast) |
 | 4 | Suhu ruangan + termometer analog |
 
+<p align="center">
+  <img src="/assets/weather_station_demo.gif?height=400&width=700" alt="ESP32 Mini Weather Station Demo" width="700"/><br/>
+  <em>Demo: slide animasi, data real-time & fallback offline</em>
+</p>
+
 ---
 
-## 🧩 Komponen
+### <p align="center">🔄 Slide (Rotasi Tiap 10 Detik)</p>
 
-| Komponen | Pin | Fungsi |
-|----------|-----|--------|
-| ESP32-C3 DevKit | - | Otak sistem |
-| SSD1306 OLED | SDA=8, SCL=9 | Tampilan |
-| DHT22 | GPIO 2 | Suhu ruangan |
-| TTP223 Touch | GPIO 4 | Wake-up sensor |
+<p align="center">
+  <strong>Slide 1:</strong> Animasi mata mochi + status WiFi<br/>
+  <strong>Slide 2:</strong> Waktu & tanggal (rounded border)<br/>
+  <strong>Slide 3:</strong> Cuaca Tangerang (suhu, kondisi, forecast)<br/>
+  <strong>Slide 4:</strong> Suhu ruangan dari DHT22 + ikon termometer
+</p>
+
+---
+
+### <p align="center">🖼️ Preview Slide</p>
+
+<p align="center">
+  <img src="/assets/slide-1.png?height=100&width=128" width="128" alt="Slide 1"/>&nbsp;&nbsp;
+  <img src="/assets/slide-2.png?height=100&width=128" width="128" alt="Slide 2"/>&nbsp;&nbsp;
+  <img src="/assets/slide-3.png?height=100&width=128" width="128" alt="Slide 3"/>&nbsp;&nbsp;
+  <img src="/assets/slide-4.png?height=100&width=128" width="128" alt="Slide 4"/><br/>
+  <em>Screenshot masing-masing slide</em>
+</p>
+
+---
+
+<p align="center">
+  <img src="/assets/Schematic-Weather-Station.png?height=400&width=700" alt="ESP32 Weather Station Wiring Diagram" width="700"/><br/>
+  <em> Wiring Diagram ESP32-C3 Mini Weather Station</em><br/>
+  ⚙️ <strong>Notes:</strong><br/>
+  🔹 OLED terhubung via I2C: SDA (GPIO 8) & SCL (GPIO 9).  
+  🔹 DHT22 terhubung ke GPIO 2 (data pin).  
+  🔹 Common ground (GND) untuk semua komponen.  
+  🔹 Power ESP32-C3 via USB atau 3.3V pin untuk testing.  
+</p>
+
+---
+
+## 🧩 Komponen Utama dan Fungsinya
+| Komponen | Fungsi | Keterangan |
+|----------|--------|-----------|
+| **ESP32-C3 DevKit** | Otak utama sistem | Menangani loop non-blocking, WiFi, fetch API, update OLED, baca DHT22 |
+| **SSD1306 OLED 128x64** | Tampilan utama | Menampilkan slide animasi, teks, ikon cuaca; I2C (SDA=8, SCL=9) |
+| **DHT22 Sensor** | Suhu & kelembaban ruangan | Terhubung ke GPIO 2, dibaca via millis() setiap 2 detik |
+| **WiFi Antenna** | Koneksi internet | Fetch data cuaca dari MSN Weather API via HTTPClient |
+| **Resistor Pull-up** | Stabilisasi I2C | Untuk OLED & DHT22 (4.7kΩ opsional) |
+| **Power Supply 3.3V** | Sumber daya | Dari ESP32-C3 atau external 5V step-down; konsumsi ~50mA active |
 
 > 📖 **Wiring Detail:** Lihat [Panduan Pengkabelan](docs/wiring_guide.md)
 
@@ -148,8 +189,8 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 **Compact IoT Weather Monitoring with Arduino Loop & Deep Sleep**  
 **Powered by ESP32-C3, Arduino, and Open Source**  
 **Star this repo if you find it helpful!**
-*Terakhir Diperbarui: 06 November 2025*
 
 [⬆ Back on Top](#esp32-mini-weather-station-esp32-c3)
 
 </div>
+*Terakhir Diperbarui: 06 November 2025*
